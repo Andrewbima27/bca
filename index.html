@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myBank App</title>
+    <style>
+        /* Reset dan Base Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container HP */
+        .mobile-container {
+            width: 360px;
+            height: 640px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* ============================
+           HALAMAN 1: LOGIN PAGE
+           ============================ */
+        #login-page {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 30px;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(180deg, #ffffff 60%, #f4f6f9 100%);
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 40px;
+        }
+
+        .logo-area h1 {
+            color: #005099; /* Biru khas BCA */
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-area h1 span {
+            color: #ff8c00; /* Aksen oranye opsional */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 10px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            background: transparent;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-bottom: 2px solid #005099;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0;
+            top: 15px;
+            cursor: pointer;
+            color: #005099;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background-color: #005099;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login:active {
+            background-color: #003a70;
+        }
+
+        /* ============================
+           HALAMAN 2: DASHBOARD PAGE
+           ============================ */
+        #dashboard-page {
+            display: none; /* Disembunyikan awalnya */
+            background-color: #f4f6f9;
+            min-height: 100%;
+        }
+
+        .dash-header {
+            background-color: #ffffff;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .greeting {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .greeting span {
+            display: block;
+            font-size: 18px;
+            color: #005099;
+            font-weight: bold;
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: #d9534f;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .card-rekening {
+            background: linear-gradient(135deg, #005099, #0073e6);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 80, 153, 0.3);
+        }
+
+        .card-rekening p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .card-rekening h2 {
+            font-size: 24px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .saldo {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .menu-item {
+            background-color: white;
+            padding: 15px 10px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 12px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #e6f0fa;
+            color: #005099;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 8px auto;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+
+        <!-- ================= HALAMAN LOGIN ================= -->
+        <div id="login-page">
+            <div class="logo-area">
+                <h1>my<span>Bank</span></h1>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="username" placeholder="BCA ID / Username" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password">
+                <span class="toggle-password" onclick="togglePassword()">SHOW</span>
+            </div>
+
+            <button class="btn-login" onclick="doLogin()">Login</button>
+        </div>
+
+        <!-- ================= HALAMAN DASHBOARD ================= -->
+        <div id="dashboard-page">
+            <div class="dash-header">
+                <div class="greeting">
+                    Selamat datang,
+                    <!-- Nama username akan muncul di sini -->
+                    <span id="display-name">NAMA USER</span>
+                </div>
+                <button class="btn-logout" onclick="doLogout()">Logout</button>
+            </div>
+
+            <div class="card-rekening">
+                <p>Tahapan Xpresi</p>
+                <h2>0123 4567 89</h2>
+                <p>Saldo Efektif</p>
+                <div class="saldo">Rp ********* <span style="font-size: 12px; opacity: 0.7; float: right;">Lihat</span></div>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-icon">💸</div>
+                    Transfer
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">📱</div>
+                    Top Up
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">💳</div>
+                    Tagihan
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">📄</div>
+                    Mutasi
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">🛍️</div>
+                    Lifestyle
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">⚙️</div>
+                    Akun
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Fungsi untuk Show/Hide Password
+        function togglePassword() {
+            var passInput = document.getElementById("password");
+            var toggleBtn = document.querySelector(".toggle-password");
+
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                toggleBtn.textContent = "HIDE";
+            } else {
+                passInput.type = "password";
+                toggleBtn.textContent = "SHOW";
+            }
+        }
+
+        // Logic Pindah Halaman & Menampilkan Nama
+        function doLogin() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+
+            // Bebas masukkan apa saja, tapi minimal ada isinya biar realistis
+            if(user.trim() === "" || pass.trim() === "") {
+                alert("Username dan Password harus diisi untuk simulasi.");
+                return;
+            }
+
+            // Ubah teks tombol sementara biar terlihat loading (opsional)
+            var btn = document.querySelector(".btn-login");
+            btn.textContent = "Loading...";
+
+            setTimeout(function() {
+                // 1. Masukkan input username ke element di halaman 2 (Ubah ke huruf besar biar estetik)
+                document.getElementById("display-name").innerText = user.toUpperCase();
+
+                // 2. Sembunyikan halaman login
+                document.getElementById("login-page").style.display = "none";
+
+                // 3. Tampilkan halaman dashboard
+                document.getElementById("dashboard-page").style.display = "block";
+
+                // Kembalikan teks tombol login ke semula (untuk dipakai jika logout)
+                btn.textContent = "Login";
+            }, 800); // Simulasi loading 0.8 detik
+        }
+
+        // Logic Kembali ke halaman awal
+        function doLogout() {
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("password").type = "password"; // reset ke password
+            document.querySelector(".toggle-password").textContent = "SHOW";
+
+            document.getElementById("dashboard-page").style.display = "none";
+            document.getElementById("login-page").style.display = "flex";
+        }
+    </script>
+
+</body>
+</html>
